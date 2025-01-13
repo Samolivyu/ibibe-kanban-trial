@@ -1,32 +1,42 @@
-import { createContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useEffect } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
+// Create the AuthContext
 export const AuthContext = createContext();
 
+// AuthProvider component
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   const login = () => {
     setIsAuthenticated(true);
+    localStorage.setItem("isAuthenticated", "true"); // Save authentication state
   };
-  
+
   const logout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem("isAuthenticated"); // Clear authentication state
   };
-  
+
+  // Check authentication status (if needed)
   const checkAuth = () => {
-    // Authentication check logic here
+    const storedAuth = localStorage.getItem("isAuthenticated");
+    setIsAuthenticated(storedAuth === "true");
   };
-  
+
   useEffect(() => {
-    checkAuth();
+    checkAuth(); // Run authentication check on component mount
   }, []);
 
-  // Fixed return statement with proper JSX syntax
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Custom hook to use the AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
 };

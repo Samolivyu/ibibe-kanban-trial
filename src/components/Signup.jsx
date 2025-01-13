@@ -2,26 +2,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const SignIn = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
-      await signIn(email, password);
-      navigate("/dashboard"); // Redirect to dashboard
+      setError(""); // Clear any previous errors
+      await signUp(email, password); // Call the signUp method
+      navigate("/dashboard"); // Redirect to the dashboard upon success
     } catch (err) {
-      setError(err.message || "Failed to sign in");
+      setError(err.message || "Failed to create an account"); // Handle errors
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Sign Up</h2>
       <input
         type="email"
         value={email}
@@ -36,10 +37,10 @@ const SignIn = () => {
         placeholder="Password"
         required
       />
-      <button type="submit">Sign In</button>
-      {error && <p>{error}</p>}
+      <button type="submit">Sign Up</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };
 
-export default SignIn;
+export default SignUp;
