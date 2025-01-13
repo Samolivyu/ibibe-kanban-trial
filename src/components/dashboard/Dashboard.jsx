@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Card, Button } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
+import { Alert, Card, Button } from "flowbite";
+import { useAuth } from "/Users/LENOVO/Desktop/PROJECTS/SOLO LEARN/IbibeTaskManager/IbibeTaskManager/src/contexts/AuthContext.jsx";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { initialTasks, logoutHandler } from "./Dashboard";
+import { initialTasks, logoutHandler } from "/Users/LENOVO/Desktop/PROJECTS/SOLO LEARN/IbibeTaskManager/IbibeTaskManager/src/components/dashboard/DashboardHelper.js";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();

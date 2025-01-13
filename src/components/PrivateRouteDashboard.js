@@ -1,8 +1,11 @@
-import React from 'react';
-import { Navigate } from 'react-router';
-import { useAuth } from '../contexts/AuthContext';
-import Dashboard from './Dashboard';
-export default function PrivateRouteDashboard() {
-  const { user } = useAuth()
-  return user ? <Dashboard/> : <Navigate to='/signin'/>
-}
+/* eslint-disable react/prop-types */
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+
+const PrivateRoute = ({ children }) => {
+  const { currentUser } = useAuth();
+
+  return currentUser ? children : <Navigate to="/" />;
+};
+
+export default PrivateRoute;
