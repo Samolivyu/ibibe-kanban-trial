@@ -1,41 +1,35 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const initialTasks = {
   "in-progress": [
-    { id: "1", content: "Task 1", description: "In progress task", dueDate: "2025-01-15", status: "in-progress" },
+    { id: "1", content: "Task 1", description: "In progress task", dueDate: "2025-01-15" },
   ],
   "under-review": [
-    { id: "2", content: "Task 2", description: "Under review task", dueDate: "2025-01-16", status: "under-review" },
+    { id: "2", content: "Task 2", description: "Under review task", dueDate: "2025-01-16" },
   ],
   "to-do": [
-    { id: "3", content: "Task 3", description: "To-do task", dueDate: "2025-01-17", status: "to-do" },
+    { id: "3", content: "Task 3", description: "To-do task", dueDate: "2025-01-17" },
   ],
   "completed": [
-    { id: "4", content: "Task 4", description: "Completed task", dueDate: "2025-01-18", status: "completed" },
+    { id: "4", content: "Task 4", description: "Completed task", dueDate: "2025-01-18" },
   ],
 };
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
-  const [error, setError] = useState("");
-  const [waiting, setWaiting] = useState(false);
   const [tasks, setTasks] = useState(initialTasks);
-  const navigate = useNavigate();
+  const [error] = useState("");
+  const navigate = useNavigate(); // For navigation
+  const dashboardRef = useRef(null);
 
-  const handleLogout = async () => {
-    setWaiting(true);
-    try {
-      await logout();
-      navigate("/signin");
-    } catch (err) {
-      setError(err.message || "Failed to log out");
-    }
-    setWaiting(false);
+  // Handle logout and navigate to login page
+  const handleLogout = () => {
+    // Clear user session or perform logout logic here
+    navigate("/"); // Navigate to the login page
   };
 
+  // Handle drag and drop
   const onDragEnd = (result) => {
     const { destination, source } = result;
     if (!destination) return;
@@ -58,12 +52,10 @@ export default function Dashboard() {
       <h2 className="text-2xl font-bold text-center mb-4">Dashboard</h2>
       {error && <div className="text-red-500 text-center mb-4">{error}</div>}
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-center">Welcome back: {user.username}</h3>
-        <h3 className="text-lg text-center">Email: {user.email}</h3>
+        <h3 className="text-lg font-semibold text-center">Welcome to your Dashboard!</h3>
       </div>
       <button
         className="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        disabled={waiting}
         onClick={handleLogout}
       >
         Log out

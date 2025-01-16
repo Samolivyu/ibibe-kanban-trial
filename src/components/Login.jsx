@@ -1,26 +1,10 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-
+import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ username: 'admin', password: 'ibibe1!' });
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(credentials); // Ensure login process is successful
-      navigate('/dashboard'); // Redirect to dashboard on success
-    } catch (error) {
-      console.error('Login failed:', error); // Handle login failure
-    }
-  };
+  const signinRef = useRef('/signin');
+  const signupRef = useRef('/signup');
+  const dashboardRef = useRef('/dashboard');
 
   return (
     <div className="landing-page">
@@ -29,34 +13,29 @@ const Login = () => {
         <p>Game Dev Redefined</p>
       </header>
       <div className="actions">
-        <button onClick={() => navigate('/signin')} className="btn btn-primary">
+        <Link to={'/signin'}>
+        <button ref={signinRef} className="btn btn-primary">
           Sign In
         </button>
-        <button onClick={() => navigate('/signup')} className="btn btn-secondary">
+        </Link>
+        <Link to={'/signup'}>
+        <button ref={signupRef} className="btn btn-secondary">
           Sign Up
         </button>
-        <button onClick={() => navigate('/dashboard')} className="btn btn-tertiary">
+        </Link>
+
+        <Link to={'/dashboard'}>
+        <button ref={dashboardRef} className="btn btn-tertiary">
           Continue to Dashboard
         </button>
+        </Link>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          value={credentials.username}
-          onChange={handleChange}
-          placeholder="Username"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          value={credentials.password}
-          onChange={handleChange}
-          placeholder="Password"
-          required
-        />
-        <button type="submit">Login</button>
+      <form>
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <Link to='/dashboard'>
+          <button type="submit">Login</button>
+        </Link>
       </form>
     </div>
   );
