@@ -1,34 +1,48 @@
-import React, { useState } from 'react';
-import { Calendar, Clock, Users, Plus, Trash, Edit } from 'lucide-react';
-import './dashboard.css'
+import React, { useState, useEffect, useMemo } from 'react';
+import { Calendar, Users, Trash, Edit, Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import './dashboard.css';
 
 const Dashboard = () => {
-  // Initialize state with a sample task that includes the new status options
+  const navigate = useNavigate();
+  
+  // Core state management for tasks and UI
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      title: 'TESTING THE UI',
+      title: 'Implement new feature',
       status: 'In Progress',
-      assignees: ['Admin', 'User 1'],
+      assignees: ['John Smith', 'Sarah Johnson'],
       dueDate: '2025-02-01',
-      description: 'Developing the new user dashboard'
+      description: 'Develop the new user dashboard'
     }
   ]);
 
-  const [newTask, setNewTask] = useState({
+  // Form state with proper default values
+  const defaultTaskState = {
     title: '',
     status: 'To Do',
     assignees: [],
     dueDate: '',
     description: ''
-  });
+  };
 
+  const [newTask, setNewTask] = useState(defaultTaskState);
   const [isEditing, setIsEditing] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [assigneePopup, setAssigneePopup] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
-  // Define all possible status options
   const statusOptions = ['To Do', 'In Progress', 'Under Review', 'Overdue', 'Done'];
 
-  // Helper function to determine status color
+  // Memoized filtered tasks for performance optimization
+  const filteredTasks = useMemo(() => {
+    if (selectedStatus === 'All') return tasks;
+    return tasks.filter(task => task.status === selectedStatus);
+  }, [tasks, selectedStatus]);
+
+  // Status color mapping for visual feedback
   const getStatusColor = (status) => {
     switch (status) {
       case 'Done':
@@ -44,85 +58,205 @@ const Dashboard = () => {
     }
   };
 
+  // Form validation
+  const validateTask = (task) => {
+    const errors = {};
+    if (!task.title.trim()) errors.title = 'Title is required';
+    if (!task.dueDate) errors.dueDate = 'Due date is required';
+    if (new Date(task.dueDate) < new Date()) {
+      errors.dueDate = 'Due date cannot be in the past';
+    }
+    return errors;
+  };
+
+  // Task management functions with error handling
   const handleAddTask = () => {
-    if (newTask.title && newTask.dueDate) {
+    try {
+      const errors = validateTask(newTask);
+      if (Object.keys(errors).length > 0) {
+        setFormErrors(errors);
+        return;
+      }
+
       setTasks([...tasks, { ...newTask, id: tasks.length + 1 }]);
-      setNewTask({
-        title: '',
-        status: 'To Do',
-        assignees: [],
-        dueDate: '',
-        description: ''
-      });
+      setNewTask(defaultTaskState);
+      setFormErrors({});
+    } catch (error) {
+      console.error('Failed to add task:', error);
+      // Implement user feedback mechanism here
     }
   };
 
   const handleDeleteTask = (taskId) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
+    try {
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
   };
 
   const handleEditTask = (task) => {
     setIsEditing(task.id);
     setNewTask(task);
+    setFormErrors({});
   };
 
   const handleUpdateTask = () => {
-    setTasks(tasks.map(task => 
-      task.id === isEditing ? newTask : task
-    ));
-    setIsEditing(null);
-    setNewTask({
-      title: '',
-      status: 'To Do',
-      assignees: [],
-      dueDate: '',
-      description: ''
-    });
+    try {
+      const errors = validateTask(newTask);
+      if (Object.keys(errors).length > 0) {
+        setFormErrors(errors);
+        return;
+      }
+
+      setTasks(tasks.map(task => 
+        task.id === isEditing ? newTask : task
+      ));
+      setIsEditing(null);
+      setNewTask(defaultTaskState);
+      setFormErrors({});
+    } catch (error) {
+      console.error('Failed to update task:', error);
+    }
   };
 
-  // Calculate task counts by status
-  const statusCounts = tasks.reduce((acc, task) => {
-    acc[task.status] = (acc[task.status] || 0) + 1;
-    return acc;
-  }, {});
+  // Improved assignee handling
+  const handleAssigneesChange = (e) => {
+    const assigneesArray = e.target.value
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+    
+    setNewTask({...newTask, assignees: assigneesArray});
+  };
+
+  // Calculate task counts for the dashboard
+  const statusCounts = useMemo(() => {
+    return tasks.reduce((acc, task) => {
+      acc[task.status] = (acc[task.status] || 0) + 1;
+      return acc;
+    }, {});
+  }, [tasks]);
+
+  // Popup management with keyboard accessibility
+  const handleAssigneeClick = (event, taskId) => {
+    event.stopPropagation();
+    setAssigneePopup(assigneePopup === taskId ? null : taskId);
+  };
+
+  const handleAssigneeKeyPress = (e, taskId) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleAssigneeClick(e, taskId);
+    }
+  };
+
+  // Cleanup and click outside handling
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (assigneePopup && !event.target.closest('.assignee-popup')) {
+        setAssigneePopup(null);
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [assigneePopup]);
 
   return (
-    <div className="p-4 max-w-6xl mx-auto space-y-6">
+    <div className="dashboard-container">
+      {/* Accessible hamburger menu */}
+      <button 
+        className="menu-trigger"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-expanded={menuOpen}
+        aria-label="Toggle menu"
+      >
+        {menuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Side navigation menu */}
+      <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
+        <div className="p-4">
+          <h2 className="text-xl font-bold mb-4">Task Filters</h2>
+          <div className="space-y-2">
+            <button
+              className={`w-full text-left p-2 rounded-md ${
+                selectedStatus === 'All' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
+              }`}
+              onClick={() => setSelectedStatus('All')}
+            >
+              All Tasks
+            </button>
+            {statusOptions.map(status => (
+              <button
+                key={status}
+                className={`w-full text-left p-2 rounded-md ${
+                  selectedStatus === status ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
+                }`}
+                onClick={() => setSelectedStatus(status)}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+          <button
+            className="logout-button"
+            onClick={() => navigate('/')}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
       <div className="bg-white shadow-lg rounded-lg p-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Welcome to the Ibibe Task Manager!</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Task title"
-            value={newTask.title}
-            onChange={(e) => setNewTask({...newTask, title: e.target.value})}
-            className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="date"
-            value={newTask.dueDate}
-            onChange={(e) => setNewTask({...newTask, dueDate: e.target.value})}
-            className="w-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        {/* Enhanced task form with error handling */}
+        <div className="task-form">
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Task title"
+              value={newTask.title}
+              onChange={(e) => setNewTask({...newTask, title: e.target.value})}
+              className={`form-input ${formErrors.title ? 'error' : ''}`}
+            />
+            {formErrors.title && <span className="error-message">{formErrors.title}</span>}
+          </div>
+
+          <div className="form-group">
+            <input
+              type="date"
+              value={newTask.dueDate}
+              onChange={(e) => setNewTask({...newTask, dueDate: e.target.value})}
+              className={`form-input w-40 ${formErrors.dueDate ? 'error' : ''}`}
+            />
+            {formErrors.dueDate && <span className="error-message">{formErrors.dueDate}</span>}
+          </div>
+
           <input
             type="text"
             placeholder="Assignees (comma-separated)"
             value={newTask.assignees.join(', ')}
-            onChange={(e) => setNewTask({...newTask, assignees: e.target.value.split(',').map(s => s.trim())})}
-            className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleAssigneesChange}
+            className="form-input"
           />
+
           <select
             value={newTask.status}
             onChange={(e) => setNewTask({...newTask, status: e.target.value})}
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-input"
           >
             {statusOptions.map(status => (
               <option key={status} value={status}>{status}</option>
             ))}
           </select>
+
           <button
             onClick={isEditing ? handleUpdateTask : handleAddTask}
             className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -131,58 +265,81 @@ const Dashboard = () => {
           </button>
         </div>
 
+        {/* Status summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {Object.entries(statusCounts).map(([status, count]) => (
-            <div key={status} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            <div key={status} className="status-card">
               <div className="text-lg font-semibold text-gray-700">{status}</div>
               <div className="text-2xl font-bold text-gray-900">{count} tasks</div>
             </div>
           ))}
         </div>
 
+        {/* Enhanced task table with accessibility */}
         <div className="overflow-x-auto rounded-lg border border-gray-200">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="task-table" role="grid">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assignees</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="table-header" scope="col">Title</th>
+                <th className="table-header" scope="col">Status</th>
+                <th className="table-header" scope="col">Assignees</th>
+                <th className="table-header" scope="col">Due Date</th>
+                <th className="table-header" scope="col">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {tasks.map(task => (
+              {filteredTasks.map(task => (
                 <tr key={task.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{task.title}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(task.status)}`}>
+                  <td className="table-cell text-gray-900">{task.title}</td>
+                  <td className="table-cell">
+                    <span className={`status-badge ${getStatusColor(task.status)}`}>
                       {task.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div className="flex items-center">
+                  <td className="table-cell text-gray-500 relative">
+                    <button
+                      onClick={(e) => handleAssigneeClick(e, task.id)}
+                      onKeyPress={(e) => handleAssigneeKeyPress(e, task.id)}
+                      className="flex items-center hover:text-blue-600"
+                      aria-label={`Show assignees (${task.assignees.length})`}
+                    >
                       <Users className="w-4 h-4 mr-2" />
                       {task.assignees.length}
-                    </div>
+                    </button>
+                    
+                    {assigneePopup === task.id && (
+                      <div className="assignee-popup" role="dialog" aria-label="Assignee list">
+                        <h3 className="font-semibold mb-2">Assignees</h3>
+                        <div className="assignee-list">
+                          {task.assignees.map((assignee, index) => (
+                            <div key={index} className="assignee-item">
+                              <Users className="w-4 h-4" />
+                              <span>{assignee}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="table-cell text-gray-500">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
                       {task.dueDate}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="table-cell">
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEditTask(task)}
-                        className="p-2 text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
+                        className="action-button edit-button"
+                        aria-label={`Edit task: ${task.title}`}
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteTask(task.id)}
-                        className="p-2 text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md"
+                        className="action-button delete-button"
+                        aria-label={`Delete task: ${task.title}`}
                       >
                         <Trash className="w-4 h-4" />
                       </button>

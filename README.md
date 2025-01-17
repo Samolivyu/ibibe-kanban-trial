@@ -1,32 +1,20 @@
 # Trial Kanban App
 
 ## Overview
-
-Trial Kanban App is a simple and effective Kanban dashboard designed for the day-to-day needs of small business teams. The app provides an intuitive interface for task management, allowing teams to track progress, collaborate efficiently, and stay organized.
-
-The goal of this project is to create a lightweight, easy-to-use tool that can be integrated into small-scale workflows without the complexity of larger enterprise solutions.
-
-This project is inspired by the excellent example found at [Refine CRM Minimal](https://github.com/refinedev/refine/tree/master/examples/app-crm-minimal). A huge thanks to the Refine team for the inspiration and guidance.
+Trial Kanban App is a user-friendly dashboard enabling small business teams to manage tasks efficiently with drag-and-drop functionality and real-time collaboration.
 
 ## Features
+- **Drag-and-Drop Tasks**
+- **Hamburger Menu for Insights**
+- **Responsive UI**
+- **Task Assignment Display**
 
-- **Drag-and-Drop Task Management** – Easily move tasks between different stages of the workflow.
-- **Customizable Boards** – Add, edit, or delete task boards to suit your team's unique needs.
-- **User-Friendly Interface** – A simple, clean layout that reduces clutter and enhances focus.
-- **Responsive Design** – Accessible from both desktop and mobile devices.
-- **Real-time Updates** – Changes are reflected instantly across users (planned feature).
-
-## Technologies Used
-
+## Technologies
 - **Frontend:** React.js
-- **State Management:** Redux
-- **Backend (planned):** Node.js / Express
-- **Database (planned):** MongoDB / PostgreSQL
-- **UI Framework:** Ant Design / Tailwind CSS
+- **Styling:** Tailwind CSS
 
 ## Installation
-
-To run this project locally:
+Clone the repo and run `npm install` followed by `npm start`.
 
 ```bash
 # Clone the repository
@@ -71,10 +59,6 @@ Feel free to submit issues regarding bugs, feature requests, or general question
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Credits
-
-Special thanks to [Refine Dev](https://github.com/refinedev) for providing the foundational CRM Minimal template that inspired this project.
 
 ---
 

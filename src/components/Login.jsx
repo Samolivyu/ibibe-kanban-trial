@@ -1,42 +1,54 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import "../../src/App.css";
 
 const Login = () => {
-  const signinRef = useRef('/signin');
-  const signupRef = useRef('/signup');
-  const dashboardRef = useRef('/dashboard');
-
   return (
     <div className="landing-page">
+      {/* Header Section */}
       <header className="welcome-section">
         <h1>Welcome to Ibibe Gaming!</h1>
         <p>Game Dev Redefined</p>
       </header>
-      <div className="actions">
-        <Link to={'/signin'}>
-        <button ref={signinRef} className="btn btn-primary">
-          Sign In
-        </button>
-        </Link>
-        <Link to={'/signup'}>
-        <button ref={signupRef} className="btn btn-secondary">
-          Sign Up
-        </button>
-        </Link>
 
-        <Link to={'/dashboard'}>
-        <button ref={dashboardRef} className="btn btn-tertiary">
-          Continue to Dashboard
-        </button>
+      {/* Action Buttons */}
+      <div className="actions">
+        <Link to="/signin">
+          <button className="btn btn-primary">Sign In</button>
         </Link>
       </div>
-      <form>
-        <input type="text" name="username" placeholder="Username" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <Link to='/dashboard'>
-          <button type="submit">Login</button>
-        </Link>
-      </form>
+
+      {/* Login Form */}
+      <div className="google-auth-form">
+        <h2>Login</h2>
+        <form>
+          <div className="input-group">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              
+              className="form-input"
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              
+              className="form-input"
+            />
+          </div>
+          <Link to="/dashboard">
+            <button type="submit" className="btn btn-submit">
+              Login
+            </button>
+          </Link>
+        </form>
+        <p className="helper-text">
+          Don't have an account? <Link to="/signup">Sign up here</Link>.
+        </p>
+      </div>
     </div>
   );
 };
