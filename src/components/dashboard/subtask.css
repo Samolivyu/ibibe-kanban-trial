@@ -1,234 +1,127 @@
-/* subtask.css */
-
-/* Fill the screen with background */
-.dashboard-container {
-  min-height: 100vh; /* Ensure it fills the viewport height */
-  background: linear-gradient(135deg, #f0f4ff 0%, #e6eeff 100%);
-  padding: 1.5rem;
-  position: relative;
+/* General Container Styles */
+.subtask-container {
+  padding: 20px;
+  background-color: #f9fafb;
 }
 
-/* Font for typewriter effect */
-body {
-  font-family: 'Courier New', Courier, monospace; /* Typewriter-like font */
-}
-
-/* Hamburger Menu Styles */
+/* Hamburger Menu */
 .menu-trigger {
   position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 50;
-}
-
-.menu-trigger button {
-  padding: 0.5rem;
-  background-color: white;
-  border-radius: 9999px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
-}
-
-.menu-trigger button:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .hamburger-menu {
   position: fixed;
   top: 0;
   left: 0;
-  height: auto; /* Adjust height to fit contents */
-  width: 16rem;
-  background-color: white;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  padding: 1rem; /* Add padding to the hamburger menu */
-}
-
-.hamburger-menu.open {
-  transform: translateX(0);
-}
-
-.hamburger-header {
-  padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  width: 200px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
-.hamburger-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
+.menu-button {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #1d4ed8;
+  color: #070707;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.hamburger-content {
-  padding: 1rem;
+.menu-button:hover {
+  background: #2563eb;
 }
 
-.all-tasks-link {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.375rem;
-  color: #2563eb;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+.menu-close-button {
+  margin-top: auto;
+  padding: 10px;
+  background: #ef4444;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.all-tasks-link:hover {
-  background-color: #eff6ff;
+.menu-close-button:hover {
+  background: #dc2626;
 }
 
-/* Color-coded status selector */
-.status-selector {
-  background-color: #f9fafb; /* Default background */
+/* Task Form */
+.task-form {
+  margin-bottom: 20px;
 }
 
-.status-selector option[value="To Do"] {
-  background-color: #d4cf23; /* Light yellow for To Do */
-}
-
-.status-selector option[value="In Progress"] {
-  background-color: #bb8b07; /* Light green for In Progress */
-}
-
-.status-selector option[value="Review"] {
-  background-color: #9125d0; /* Light gray for Review */
-}
-
-.status-selector option[value="Done"] {
-  background-color: #07c060; /* Light teal for Done */
-}
-
-.status-selector option[value="Overdue"] {
-  background-color: #ef1010; /* Light teal for Done */
-}
-
-/* Dropdown styles */
-.dropdown {
-  position: relative;
-}
-
-.dropdown select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.dropdown select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background-color: #e5e7eb; /* Grey background on focus */
-}
-
-/* Logout Button Styles */
-.logout {
-  color: red; /* Red color for logout */
-  transition: background-color 0.2s ease;
-}
-
-.logout:hover {
-  background-color: red; /* Red background on hover */
-}
-
-/* Home Button Styles */
-.homebutton {
-  transition: background-color 0.2s ease;
-}
-
-.homebutton:hover {
-  background-color: green; /* Change to green on hover */
-}
-
-/* Sub-Task Styling */
-.sub-task {
-  margin-left: 20px;
+.form-input {
+  margin-right: 10px;
   padding: 8px;
-  border-left: 2px solid #3b82f6;
-  background-color: #f9fafb;
-  margin-bottom: 8px;
+  border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.sub-task input {
-  width: 100%;
-  padding: 6px 8px;
-  margin-top: 4px;
-}
-
-/* Task List Styles */
-.task-list {
-  max-width: 64rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.task-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  transition: box-shadow 0.2s ease;
-}
-
-.task-card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.task-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #0a0a0a;
-  margin-bottom: 1rem;
-}
-
-/* Subtask Styles */
-.subtask-form {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.subtask-form input,
-.subtask-form select {
-  flex: 1;
-  min-width: 150px;
-  padding: 0.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  color: black;
-}
-
-.add-subtask-btn {
-  padding: 0.5rem;
-  background-color: #22c55e;
+.add-task-button {
+  padding: 8px 16px;
+  background: #10b981;
   color: white;
-  border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.add-subtask-btn:hover {
-  background-color: #16a34a;
+.add-task-button:hover {
+  background: #059669;
 }
 
-.subtask-item {
-  background-color: white; /* Ensure background color is set */
-  border: 1px solid #e5e7eb; /* Optional border for clarity */
-  border-radius: 0.375rem; /* Rounded corners */
-  padding: 0.75rem; /* Padding for the subtask item */
-  margin-bottom: 0.5rem; /* Space between subtasks */
-  transition: box-shadow 0.2s ease; /* Transition for hover effect */
+/* Subtask Table */
+.subtask-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.subtask-item:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hover effect */
+.subtask-table th,
+.subtask-table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.subtask-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+.edit-button {
+  margin-right: 8px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background: #2563eb;
+}
+
+.delete-button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background: #dc2626;
 }
