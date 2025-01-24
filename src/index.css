@@ -54,8 +54,8 @@ h5 {
 
 /* Main statement styling (h3) */
 h3 {
-  font-size: 3.2rem;
-  color: #ffffff;
+  font-size: 1.8rem;
+  color: #000000;
   line-height: 1.1;
   text-align: center;
   margin-bottom: 30px;
@@ -79,7 +79,7 @@ button {
 
 button:hover {
   background-color: #535bf2;
-  border-color: #646cff;
+  border-color: #9196ff;
 }
 
 button:focus,
