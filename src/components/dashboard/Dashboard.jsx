@@ -6,19 +6,9 @@ import './dashboard.css';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Implement new feature',
-      status: 'In Progress',
-      assignees: ['John Smith', 'Sarah Johnson'],
-      dueDate: '2025-02-01',
-      description: 'Develop the new user dashboard',
-      subTasks: []
-    },
-  ]);
-  const [newTask, setNewTask] = useState({ title: '', status: 'To Do', assignees: [], dueDate: '', description: '' });
-  const [newSubtask, setNewSubtask] = useState({ title: '', assignee: '', dueDate: '' });
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState({ title: '', status: '', assignees: [], dueDate: '', description: '' });
+  const [newSubtask, setNewSubtask] = useState({ title: '', assignee: '', status: '', dueDate: '' });
   const [formErrors, setFormErrors] = useState({});
   const [editingTask, setEditingTask] = useState(null);
   const [editingSubtask, setEditingSubtask] = useState(null);
@@ -99,6 +89,21 @@ const Dashboard = () => {
     );
   };
 
+   const handleSubtaskStatusChange = (taskId, subtaskId, newStatus) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              subtasks: task.subtasks.map((subtask) =>
+                subtask.id === subtaskId ? { ...subtask, status: newStatus } : subtask
+              ),
+            }
+          : task
+      )
+    );
+  };
+
   const filteredTasks = useMemo(() => tasks, [tasks]);
 
   return (
@@ -110,7 +115,7 @@ const Dashboard = () => {
       {menuOpen && (
         <div className="hamburger-menu">
           <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Task Filters</h2>
+            <h2 className="text-xl font-bold mb-4">Navbar</h2>
             <button className="logout-button" onClick={() => navigate('/')}>Logout</button>
             <button className="menu-close-button" onClick={toggleMenu}>Close Menu</button>
           </div>
@@ -119,14 +124,13 @@ const Dashboard = () => {
 
       <div className="bg-white shadow-lg rounded-lg p-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Ibibe Kanban</h2>
+          <h2 className="text-2xl font-bold text-gray-800">My Ibibe Kanban</h2>
         </div>
 
         <div className="task-form">
           <input
             type="text"
             placeholder="Task Title"
-            value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
             className={`form-input ${formErrors.title ? 'error' : ''}`}
           />
@@ -142,15 +146,14 @@ const Dashboard = () => {
             {formErrors.dueDate && <span className="error-message">{formErrors.dueDate}</span>}
           </div>
 
-          <select
-            value={newTask.status}
-            onChange={(e) => setNewTask({ ...newTask, status: e.target.value })}
-            className="form-input"
-          >
-            {statusOptions.map((status) => (
-              <option key={status} value={status}>{status}</option>
-            ))}
-          </select>
+          <div className="tasks">
+        {tasks.map((task) => (
+          <div key={task.id} className={`task-card ${getStatusColor(task.status)}`}>
+            <p>{task.description}</p>
+            <span className="status">{task.status}</span>
+          </div>
+        ))}
+      </div>
 
           <button onClick={handleAddTask} className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
             Add Task
@@ -161,19 +164,21 @@ const Dashboard = () => {
           {filteredTasks.map((task) => (
             <div key={task.id} className="task-item">
               <h3>{task.title}</h3>
+                  <div>
+                    <table className="subtask-table">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Assignee</th>
+                          <th>Status</th> 
+                          <th>Due Date</th> 
+                          <th>Actions</th> 
+                        </tr> 
+                      </thead>  
+                      </table> 
+                  </div>
               <p className={`status-badge ${getStatusColor(task.status)}`}>{task.status}</p>
-
-              <div>
-                <table className="subtask-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Assignee</th>
-                      <th>Due Date</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <tbody>
                     {task.subTasks.map((subTask) => (
                       <tr key={subTask.id}>
                         {editingSubtask === subTask.id ? (
@@ -204,6 +209,8 @@ const Dashboard = () => {
                                 onChange={(e) => setEditingSubtask({ ...subTask, dueDate: e.target.value })}
                                 className="form-input"
                               />
+                            {formErrors.dueDate && <span className="error-message">{formErrors.dueDate}</span>}
+
                             </td>
                             <td>
                               <button
@@ -245,9 +252,7 @@ const Dashboard = () => {
                       </tr>
                     ))}
                   </tbody>
-                </table>
-              </div>
-
+                  
               <div>
                 <input
                   type="text"
@@ -272,6 +277,7 @@ const Dashboard = () => {
                   onChange={(e) => setNewSubtask({ ...newSubtask, dueDate: e.target.value })}
                   className="form-input"
                 />
+
                 <button
                   onClick={() => handleAddSubtask(task.id)}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"

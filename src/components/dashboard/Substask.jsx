@@ -1,123 +1,34 @@
-import React, { useState, useMemo } from 'react';
-import { Menu, X, Users, Trash, Edit } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import './subtask.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Edit, Trash } from "lucide-react";
 
-const Subtask = () => {
-  const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const users = Array.from({ length: 10 }, (_, i) => ({ text: `User ${i + 1}`, value: `User ${i + 1}` }));
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Subtask Example',
-      assignee: 'User 1',
-      status: 'In Progress',
-      dueDate: '2025-02-15',
-    },
-  ]);
-  const [newTask, setNewTask] = useState({
-    title: '',
-    assignee: '',
-    status: 'To Do',
-    dueDate: '',
-  });
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const handleAddTask = () => {
-    if (!newTask.title || !newTask.assignee || !newTask.dueDate) return;
-    setTasks([...tasks, { ...newTask, id: tasks.length + 1 }]);
-    setNewTask({ title: '', assignee: '', status: 'To Do', dueDate: '' });
-  };
-
-  const filteredTasks = useMemo(() => tasks, [tasks]);
-
+const SubtaskTable = ({ subtasks, onEditSubtask, onDeleteSubtask }) => {
   return (
-    <div className={`subtask-container ${menuOpen ? 'menu-open' : ''}`}>
-      {/* Hamburger Menu */}
-      <button className="menu-trigger" onClick={toggleMenu} aria-expanded={menuOpen}>
-        {menuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {menuOpen && (
-        <div className="hamburger-menu">
-          <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Menu</h2>
-            <button
-              className="menu-button"
-              onClick={() => navigate('/dashboard')}
-            >
-              Home
-            </button>
-            <button
-              className="menu-button"
-              onClick={() => navigate('/')}
-            >
-              Logout
-            </button>
-            <button className="menu-close-button" onClick={toggleMenu}>
-              Close Menu
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Task Input Form */}
-      <div className="task-form">
-        <input
-          type="text"
-          placeholder="Task Title"
-          value={newTask.title}
-          onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-          className="form-input"
-        />
-        <select
-          value={newTask.assignee}
-          onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
-          className="form-input"
-        >
-          <option value="">Select User</option>
-      {users.map((user) => (
-        <option key={user.value} value={user.value}>
-          {user.text}
-        </option>
-          ))}
-        </select>
-        <input
-          type="date"
-          value={newTask.dueDate}
-          onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-          className="form-input"
-        />
-        <button onClick={handleAddTask} className="add-task-button">
-          Add Task
-        </button>
-      </div>
-
-      {/* User Output Table */}
-      <table className="subtask-table">
+    <div className="subtask-table">
+      <table>
         <thead>
           <tr>
             <th>Title</th>
-            <th>Assignee</th>
             <th>Status</th>
-            <th>Due Date</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filteredTasks.map((task) => (
-            <tr key={task.id}>
-              <td>{task.title}</td>
-              <td>{task.assignee}</td>
-              <td>{task.status}</td>
-              <td>{task.dueDate}</td>
+          {subtasks.map((subtask) => (
+            <tr key={subtask.id}>
+              <td>{subtask.title}</td>
+              <td>{subtask.status}</td>
               <td>
-                <button className="edit-button">
+                <button
+                  onClick={() => onEditSubtask(subtask)}
+                  className="edit-btn"
+                >
                   <Edit size={16} />
                 </button>
-                <button className="delete-button" onClick={() => setTasks(tasks.filter((t) => t.id !== task.id))}>
+                <button
+                  onClick={() => onDeleteSubtask(subtask.id)}
+                  className="delete-btn"
+                >
                   <Trash size={16} />
                 </button>
               </td>
@@ -125,6 +36,104 @@ const Subtask = () => {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+};
+
+const Subtask = () => {
+  const [subtasks, setSubtasks] = useState([
+    { id: 1, title: "Subtask 1", status: "To Do" },
+    { id: 2, title: "Subtask 2", status: "In Progress" },
+    { id: 3, title: "Subtask 3", status: "Done" },
+  ]);
+  const [currentSubtask, setCurrentSubtask] = useState(null);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+  // Status options for dropdown
+  const statusOptions = ["To Do", "In Progress", "Done"];
+
+  const handleEditSubtask = (subtask) => {
+    setCurrentSubtask(subtask);
+  };
+
+  const handleDeleteSubtask = (subtaskId) => {
+    setSubtasks(subtasks.filter((subtask) => subtask.id !== subtaskId));
+  };
+
+  const handleUpdateSubtaskStatus = (id, newStatus) => {
+    setSubtasks((prevSubtasks) =>
+      prevSubtasks.map((subtask) =>
+        subtask.id === id ? { ...subtask, status: newStatus } : subtask
+      )
+    );
+  };
+
+  const users = Array.from({ length: 10 }, (_, i) => `User ${i + 1}`);
+
+  return (
+    <div className="subtask-container">
+      <button
+        className="hamburger-menu"
+        onClick={() => setHamburgerOpen((prev) => !prev)}
+      >
+        ☰
+      </button>
+
+      {hamburgerOpen && (
+        <div className="hamburger-dropdown">
+          {users.map((user, index) => (
+            <Link to="/dashboard/all" key={index} className="user-link">
+              <button className="user-btn">{user}</button>
+            </Link>
+          ))}
+          <Link to="/">
+            <button className="logout-btn">Log Out</button>
+          </Link>
+        </div>
+      )}
+
+      <SubtaskTable
+        subtasks={subtasks}
+        onEditSubtask={handleEditSubtask}
+        onDeleteSubtask={handleDeleteSubtask}
+      />
+
+      {currentSubtask && (
+        <div className="edit-form">
+          <h3>Edit Subtask</h3>
+          <input
+            type="text"
+            value={currentSubtask.title}
+            onChange={(e) =>
+              setCurrentSubtask({ ...currentSubtask, title: e.target.value })
+            }
+          />
+          <select
+            value={currentSubtask.status}
+            onChange={(e) =>
+              setCurrentSubtask({ ...currentSubtask, status: e.target.value })
+            }
+          >
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={() => {
+              handleUpdateSubtaskStatus(
+                currentSubtask.id,
+                currentSubtask.status
+              );
+              setCurrentSubtask(null);
+            }}
+            className="save-btn"
+          >
+            Save
+          </button>
+        </div>
+      )}
     </div>
   );
 };

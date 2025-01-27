@@ -4,7 +4,7 @@ General Styles
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: #504a50de;
   background-color: #242424;
 }
 
@@ -102,6 +102,8 @@ p.clickable-statement:hover {
 p.clickable-statement:active {
   color: #905e26;
 }
+
+
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {

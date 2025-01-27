@@ -10,6 +10,17 @@ body {
   height: 100vh;
 }
 
+img {
+  width: 100%;
+  height:70%;
+  border: 1px solid black;
+  background-color: none;
+  margin-right: 1em;
+  object-fit: contain;
+  object-position: top;
+}
+
+
 /* Landing Page Container */
 .landing-page {
   text-align: center;
@@ -18,7 +29,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+  max-width: 900px;
 }
 
 /* Welcome Section */

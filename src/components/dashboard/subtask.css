@@ -1,127 +1,125 @@
-/* General Container Styles */
-.subtask-container {
-  padding: 20px;
-  background-color: #f9fafb;
+body {
+  font-family: "Arial", sans-serif;
+  margin: top;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #373537;
 }
 
-/* Hamburger Menu */
-.menu-trigger {
-  position: fixed;
-  top: 10px;
-  left: 10px;
+
+.subtask-container {
+  padding: 1rem;
+}
+
+.subtask-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.subtask-table th,
+.subtask-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.subtask-table th {
+  background-color: #ffffff;
+  font-weight: bold;
+}
+
+.edit-btn,
+.delete-btn {
   background: none;
   border: none;
   cursor: pointer;
 }
 
+.edit-btn:hover {
+  color: blue;
+}
+
+.delete-btn:hover {
+  color: red;
+}
+
 .hamburger-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200px;
-  height: 100vh;
-  background: white;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.menu-button {
-  margin-bottom: 10px;
-  padding: 10px;
-  background: #1d4ed8;
-  color: #070707;
+  font-size: 24px;
+  background: none;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
 }
 
-.menu-button:hover {
-  background: #2563eb;
-}
-
-.menu-close-button {
-  margin-top: auto;
-  padding: 10px;
-  background: #ef4444;
-  color: #0a0a0a;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.menu-close-button:hover {
-  background: #dc2626;
-}
-
-/* Task Form */
-.task-form {
-  margin-bottom: 20px;
-}
-
-.form-input {
-  margin-right: 10px;
-  padding: 8px;
+.hamburger-dropdown {
+  position: absolute;
+  background: #696868;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 1000;
 }
 
-.add-task-button {
-  padding: 8px 16px;
-  background: #10b981;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.user-link {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-.add-task-button:hover {
-  background: #059669;
-}
-
-/* Subtask Table */
-.subtask-table {
+.user-btn {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.subtask-table th,
-.subtask-table td {
-  padding: 8px;
+  padding: 0.5rem;
   text-align: left;
-  border: 1px solid #ddd;
-}
-
-.subtask-table th {
-  background: #f4f4f4;
-  font-weight: bold;
-}
-
-.edit-button {
-  margin-right: 8px;
-  background: #3b82f6;
-  color: white;
-  border: none;
+  background-color: #0f0e0e;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 4px 8px;
   cursor: pointer;
 }
 
-.edit-button:hover {
-  background: #2563eb;
+.user-btn:hover {
+  background-color: #636363;
 }
 
-.delete-button {
-  background: #ef4444;
-  color: white;
+.logout-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #ff5c5c;
+  color: #fff;
   border: none;
   border-radius: 4px;
-  padding: 4px 8px;
   cursor: pointer;
 }
 
-.delete-button:hover {
-  background: #dc2626;
+.logout-btn:hover {
+  background-color: #e04a4a;
+}
+
+.edit-form {
+  margin-top: 1rem;
+}
+
+.edit-form input,
+.edit-form select {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.save-btn {
+  padding: 0.5rem 1rem;
+  background-color: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #2563eb;
 }

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import "../../src/App.css";
+import "../../src/assets/ibibe-temp-logo.png"
 
 const Login = () => {
   return (
     <div className="landing-page">
+      <img src="/src/assets/ibibe-temp-logo.png" alt="Ibibe Logo" />
       {/* Header Section */}
       <header className="welcome-section">
         <h1>Welcome to Ibibe Gaming!</h1>
@@ -13,7 +15,7 @@ const Login = () => {
       {/* Action Buttons */}
       <div className="actions">
         <Link to="/signin">
-          <button className="btn btn-primary">Sign In</button>
+          <button className="auth-button">Sign In</button>
         </Link>
       </div>
 
@@ -40,7 +42,7 @@ const Login = () => {
             />
           </div>
           <Link to="/dashboard">
-            <button type="submit" className="btn btn-submit">
+            <button type="submit" className="auth-button">
               Login
             </button>
           </Link>

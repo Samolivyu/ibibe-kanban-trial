@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../App.css'
+
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -14,16 +16,16 @@ const SignIn = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Sign In</h2>
-      <input
+    <form className= "landing-page" onSubmit={handleSubmit}>
+      <h1 className="welcome-section h1">Sign In</h1>
+      <input className="welcome-section p"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         
       />
-      <input
+      <input className="welcome-section p"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
