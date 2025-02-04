@@ -86,6 +86,7 @@ body {
   border-radius: 8px;
   background-color: #fff;
   color: #000000; 
+  width: inherit;
 }
 
 .task-list {
