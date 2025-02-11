@@ -1,40 +1,21 @@
-import { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import {Link} from "react-router-dom"
 
-const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const Signup = () => {
   const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    // e.preventDefault();
-    setError(""); // Clear previous errors
-    navigate("/dashboard"); // Redirect to dashboard without authentication
-  };
-
   return (
-    <form className="landing-page" onSubmit={handleSubmit}>
-      <h2>Sign Up</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        
-      />
-      <Link to={'/dashboard'}><button type="submit">Sign Up</button></Link>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+    <div className="signup">
+      <h1>Sign Up</h1>
+      <form>
+        <input type="text" placeholder="Username" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="button" onClick={() => navigate("/dashboard")}>
+          Sign Up
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default SignUp;
+export default Signup;

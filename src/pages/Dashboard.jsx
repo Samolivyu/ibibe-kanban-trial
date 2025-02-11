@@ -1,13 +1,14 @@
-// src/pages/Dashboard.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Subtask from "../components/tasks/Subtask";
+import Hamburger from "../pages/Hamburger";
+import "../style.css";
 
-// Hard-coded users and roles for dropdowns (adjust as needed)
 const userOptions = ["User 1", "User 2", "User 3", "User 4", "User 5"];
 const roleOptions = ["Tester", "Unity dev", "Back-end", "Front-end", "API dev"];
 const statusOptions = ["To Do", "In Progress", "Under Review", "Overdue", "Done"];
 
-const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage }) => {
+const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, onAddSubtask }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
@@ -17,8 +18,8 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
     dueDate: ""
   });
   const [formErrors, setFormErrors] = useState({});
+  const [openSubtaskForms, setOpenSubtaskForms] = useState({});
 
-  // Validate fields (empty check and due date in the past)
   const validateForm = () => {
     const errors = {};
     if (!formData.title) errors.title = "Title is required.";
@@ -43,13 +44,18 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
     }
   };
 
-  // For editing a task – toggles edit mode and saves updates
+  const toggleSubtaskForm = (taskId) => {
+    setOpenSubtaskForms({
+      ...openSubtaskForms,
+      [taskId]: !openSubtaskForms[taskId]
+    });
+  };
+
   const handleEditToggle = (task) => {
     onUpdateTask({ ...task, isEditing: !task.isEditing });
   };
 
-  const handleSave = (task, index) => {
-    // Validate edited task (for simplicity, we require all fields)
+  const handleSave = (task) => {
     if (!task.title || !task.user || !task.role || !task.status || !task.dueDate) {
       alert("All fields are required.");
       return;
@@ -57,11 +63,18 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
     onUpdateTask({ ...task, isEditing: false });
   };
 
+  const logout = () => {
+    navigate("/");
+  };
+
   return (
     <div className="dashboard">
-      <h1>Ibibe Kanban</h1>
+      <Hamburger />
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <button className="logout-btn" onClick={logout}>Logout</button>
+      </div>
       
-      {/* Form to add new task */}
       <form onSubmit={handleAdd} className="task-form">
         <table className="task-table">
           <thead>
@@ -143,7 +156,6 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
         </table>
       </form>
       
-      {/* Tasks Table */}
       <table className="task-table">
         <thead>
           <tr>
@@ -158,100 +170,129 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
         <tbody>
           {tasks.length > 0 ? (
             tasks.map((task) => (
-              <tr key={task.id}>
-                {task.isEditing ? (
-                  <>
-                    <td>
-                      <input
-                        type="text"
-                        value={task.title}
-                        onChange={(e) =>
-                          onUpdateTask({ ...task, title: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td>
-                      <select
-                        value={task.user}
-                        onChange={(e) =>
-                          onUpdateTask({ ...task, user: e.target.value })
-                        }
-                      >
-                        <option value="">Select User</option>
-                        {userOptions.map((user) => (
-                          <option key={user} value={user}>
-                            {user}
-                          </option>
+              <React.Fragment key={task.id}>
+                <tr>
+                  {task.isEditing ? (
+                    <>
+                      <td>
+                        <input
+                          type="text"
+                          value={task.title}
+                          onChange={(e) =>
+                            onUpdateTask({ ...task, title: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td>
+                        <select
+                          value={task.user}
+                          onChange={(e) =>
+                            onUpdateTask({ ...task, user: e.target.value })
+                          }
+                        >
+                          <option value="">Select User</option>
+                          {userOptions.map((user) => (
+                            <option key={user} value={user}>
+                              {user}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          value={task.role}
+                          onChange={(e) =>
+                            onUpdateTask({ ...task, role: e.target.value })
+                          }
+                        >
+                          <option value="">Select Role</option>
+                          {roleOptions.map((role) => (
+                            <option key={role} value={role}>
+                              {role}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          value={task.status}
+                          onChange={(e) =>
+                            onUpdateTask({ ...task, status: e.target.value })
+                          }
+                        >
+                          <option value="">Select Status</option>
+                          {statusOptions.map((status) => (
+                            <option key={status} value={status}>
+                              {status}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="date"
+                          value={task.dueDate}
+                          onChange={(e) =>
+                            onUpdateTask({ ...task, dueDate: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td>
+                        <button className="save-btn" onClick={() => handleSave(task)}>
+                          Save
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td>{task.title}</td>
+                      <td>{task.user}</td>
+                      <td>{task.role}</td>
+                      <td>
+                        <span className={`status ${task.status.replace(/\s/g, "-").toLowerCase()}`}>
+                          {task.status}
+                        </span>
+                      </td>
+                      <td>{task.dueDate}</td>
+                      <td>
+                        <button className="edit-btn" onClick={() => handleEditToggle(task)}>
+                          Edit
+                        </button>
+                        <button className="delete-btn" onClick={() => onDeleteTask(task.id)}>
+                          Delete
+                        </button>
+                        <button className="add-btn" onClick={() => toggleSubtaskForm(task.id)}>
+                          {openSubtaskForms[task.id] ? "Cancel Subtask" : "Add Subtask"}
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+                {task.subtasks && task.subtasks.length > 0 && (
+                  <tr className="subtask-row">
+                    <td colSpan="6">
+                      <div className="subtask-list">
+                        {task.subtasks.map((sub) => (
+                          <div key={sub.id} className="subtask-item">
+                            <strong>Subtask for {task.title}:</strong> {sub.title} | Assigned to: {sub.user} | Status:{" "}
+                            <span className={`status ${sub.status.replace(/\s/g, "-").toLowerCase()}`}>
+                              {sub.status}
+                            </span>{" "}
+                            | Due: {sub.dueDate}
+                          </div>
                         ))}
-                      </select>
+                      </div>
                     </td>
-                    <td>
-                      <select
-                        value={task.role}
-                        onChange={(e) =>
-                          onUpdateTask({ ...task, role: e.target.value })
-                        }
-                      >
-                        <option value="">Select Role</option>
-                        {roleOptions.map((role) => (
-                          <option key={role} value={role}>
-                            {role}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        value={task.status}
-                        onChange={(e) =>
-                          onUpdateTask({ ...task, status: e.target.value })
-                        }
-                      >
-                        <option value="">Select Status</option>
-                        {statusOptions.map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="date"
-                        value={task.dueDate}
-                        onChange={(e) =>
-                          onUpdateTask({ ...task, dueDate: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td>
-                      <button className="save-btn" onClick={() => handleSave(task)}>
-                        Save
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{task.title}</td>
-                    <td>{task.user}</td>
-                    <td>{task.role}</td>
-                    <td>
-                      <span className={`status ${task.status.replace(/\s/g, "-").toLowerCase()}`}>
-                        {task.status}
-                      </span>
-                    </td>
-                    <td>{task.dueDate}</td>
-                    <td>
-                      <button className="edit-btn" onClick={() => handleEditToggle(task)}>
-                        Edit
-                      </button>
-                      <button className="delete-btn" onClick={() => onDeleteTask(task.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </>
+                  </tr>
                 )}
-              </tr>
+                {openSubtaskForms[task.id] && (
+                  <tr className="subtask-form-row">
+                    <td colSpan="6">
+                      <Subtask parentTask={task} onAddSubtask={onAddSubtask} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))
           ) : (
             <tr>
@@ -261,9 +302,8 @@ const Dashboard = ({ tasks, onAddTask, onUpdateTask, onDeleteTask, changePage })
         </tbody>
       </table>
       
-      {/* Button to view tasks */}
       <div className="view-tasks-btn-container">
-        <button onClick={() => changePage("showtask")} className="view-tasks-btn">
+        <button onClick={() => navigate("/showtask")} className="view-tasks-btn">
           View Tasks
         </button>
       </div>

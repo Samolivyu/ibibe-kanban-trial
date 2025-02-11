@@ -1,29 +1,58 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SignUp from './components/Signup.jsx';
-import Home from './components/Home.jsx';
-import SignIn from './components/Signin.jsx';
-import Subtask from './components/dashboard/Subtask.jsx';
-import ErrorBoundary from './components/errors/ErrorBoundary.jsx';
-import Task from './components/dashboard/Task.jsx';
-import Dashboard from './components/dashboard/Dashboard.jsx';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import Signin from "./components/Signin";
+import Signup from "./components/Signup";
+import Dashboard from "./pages/Dashboard";
+import ShowTask from "./components/tasks/ShowTask";
+import "./style.css";
 
 function App() {
   const [tasks, setTasks] = useState([]);
 
+  const handleAddTask = (task) => {
+    const newTask = { ...task, id: Date.now(), subtasks: [], isEditing: false };
+    setTasks([...tasks, newTask]);
+  };
+
+  const handleUpdateTask = (updatedTask) => {
+    setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+  };
+
+  const handleDeleteTask = (taskId) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
+  const handleAddSubtask = (parentTaskId, subtask) => {
+    setTasks(tasks.map(task => {
+      if (task.id === parentTaskId) {
+        return { ...task, subtasks: [...(task.subtasks || []), subtask] };
+      }
+      return task;
+    }));
+  };
+
   return (
-    <ErrorBoundary>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard/all" element={<Subtask />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/:userId" element={<Task />} />
-        </Routes>
-      </Router>
-    </ErrorBoundary>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard
+              tasks={tasks}
+              onAddTask={handleAddTask}
+              onUpdateTask={handleUpdateTask}
+              onDeleteTask={handleDeleteTask}
+              onAddSubtask={handleAddSubtask}
+            />
+          }
+        />
+        <Route path="/showtask" element={<ShowTask tasks={tasks} />} />
+      </Routes>
+    </Router>
   );
 }
 

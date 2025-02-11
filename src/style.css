@@ -14,9 +14,9 @@ body, html {
   height: 100vh;
 }
 
-/* Main content */
+/* Main content area */
 .content {
-  margin-left: 60px; /* leave space for sidebar */
+  margin-left: 60px; /* leave space for the sidebar */
   padding: 20px;
 }
 
@@ -62,18 +62,60 @@ body, html {
   background: #666;
 }
 
-/* Dashboard Page */
-.dashboard {
-  margin-left: 70px; /* avoid overlapping with sidebar */
-  padding: 20px;
+/* Home, Signin, Signup Pages */
+.home, .signin, .signup {
+  text-align: center;
+  padding: 50px;
 }
 
-.task-form {
+.home h1, .signin h1, .signup h1 {
   margin-bottom: 20px;
 }
 
-.task-form input, 
-.task-form select {
+.auth-buttons button,
+.signin button,
+.signup button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background-color: #2196F3;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.auth-buttons button:hover,
+.signin button:hover,
+.signup button:hover {
+  background-color: #1976d2;
+}
+
+/* Dashboard Page */
+.dashboard {
+  margin-left: 70px;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #f44336;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Form and Table Styles */
+.task-form input,
+.task-form select,
+.subtask-form input,
+.subtask-form select {
   padding: 5px;
   margin: 5px;
 }
@@ -84,7 +126,7 @@ body, html {
   margin-top: 20px;
 }
 
-.task-table th, 
+.task-table th,
 .task-table td {
   border: 1px solid #ddd;
   padding: 8px;
@@ -161,9 +203,37 @@ body, html {
   background-color: #4caf50;
 }
 
-/* ShowTask Page Filters */
-.show-task .filter-section input,
-.show-task .filter-section select {
+/* Subtask styles */
+.subtask {
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.subtask-row {
+  background-color: #fcfcfc;
+}
+
+.subtask-item {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+/* ShowTask Page */
+.show-task {
+  margin-left: 70px;
+  padding: 20px;
+}
+
+.show-task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-section input,
+.filter-section select {
   padding: 5px;
   margin: 10px 5px 10px 0;
 }

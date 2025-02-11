@@ -1,9 +1,9 @@
 // src/components/Hamburger.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../style.css";
+import "../"; 
 
-const Hamburger = ({ currentPage, changePage }) => {
+const Hamburger = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
 
@@ -12,9 +12,7 @@ const Hamburger = ({ currentPage, changePage }) => {
   };
 
   const handleNavClick = (page) => {
-    changePage(page);
-    // Adjust navigation paths as needed. For example:
-    navigate(page === "dashboard" ? "/" : "/showtask");
+    navigate(page === "dashboard" ? "/dashboard" : "/showtask");
   };
 
   return (
@@ -24,11 +22,9 @@ const Hamburger = ({ currentPage, changePage }) => {
       </div>
       <nav className="nav-menu">
         <button onClick={() => handleNavClick("dashboard")}>
-          {/* Home icon – you can replace with an SVG/icon library */}
           <span role="img" aria-label="home">🏠</span>
         </button>
         <button onClick={() => handleNavClick("showtask")}>
-          {/* Tasks icon */}
           <span role="img" aria-label="tasks">📋</span>
         </button>
       </nav>

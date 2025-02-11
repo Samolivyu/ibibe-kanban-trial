@@ -10,27 +10,12 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-<<<<<<< HEAD
-  componentDidCatch(error, info) {
-    console.error("Error caught by Error Boundary: ", error, info);
-=======
   componentDidCatch(error, errorInfo) {
-    console.error("ErrorBoundary caught an error", error, errorInfo);
->>>>>>> 7672b03 (This is the updated kanban feature. Working CSS and functionality. Ready for deployment.)
+    console.error("Ndio hii shida:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-<<<<<<< HEAD
-      return <h1>Iko shida mkuu!</h1>;
-    }
-
-    return this.props.children;
-  }
-}
-
-export default ErrorBoundary;
-=======
       return <h1>Iko shida mkuu.</h1>;
     }
 
@@ -48,4 +33,3 @@ export default ErrorBoundary;
 }
 
 export default ErrorBoundary;
->>>>>>> 7672b03 (This is the updated kanban feature. Working CSS and functionality. Ready for deployment.)
