@@ -1,0 +1,185 @@
+/* style.css */
+
+/* Reset */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* App container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Main content */
+.content {
+  margin-left: 60px; /* leave space for sidebar */
+  padding: 20px;
+}
+
+/* Hamburger Sidebar */
+.hamburger {
+  background: #444;
+  color: #fff;
+  width: 60px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.hamburger.expanded {
+  width: 200px;
+}
+
+.hamburger .hamburger-toggle {
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  background: #555;
+}
+
+.hamburger .nav-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.hamburger .nav-menu button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 15px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.hamburger .nav-menu button:hover {
+  background: #666;
+}
+
+/* Dashboard Page */
+.dashboard {
+  margin-left: 70px; /* avoid overlapping with sidebar */
+  padding: 20px;
+}
+
+.task-form {
+  margin-bottom: 20px;
+}
+
+.task-form input, 
+.task-form select {
+  padding: 5px;
+  margin: 5px;
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.task-table th, 
+.task-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.task-table th {
+  background-color: #f2f2f2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Button Styles */
+.add-btn, .edit-btn, .delete-btn, .save-btn, .view-tasks-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.edit-btn {
+  background-color: #2196F3;
+  color: #fff;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.save-btn {
+  background-color: #FF9800;
+  color: #fff;
+}
+
+.view-tasks-btn {
+  background-color: #9C27B0;
+  color: #fff;
+}
+
+/* Status Color Coding */
+.status {
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.status.to-do {
+  background-color: #ff9800;
+}
+
+.status.in-progress {
+  background-color: #2196F3;
+}
+
+.status.under-review {
+  background-color: #9c27b0;
+}
+
+.status.overdue {
+  background-color: #f44336;
+}
+
+.status.done {
+  background-color: #4caf50;
+}
+
+/* ShowTask Page Filters */
+.show-task .filter-section input,
+.show-task .filter-section select {
+  padding: 5px;
+  margin: 10px 5px 10px 0;
+}
+
+/* Error Messages */
+.error {
+  color: red;
+  font-size: 0.8em;
+}
+
+/* Users Dropdown */
+.user-dropdown {
+  margin-top: 10px;
+}
+
+.user-dropdown select {
+  padding: 5px;
+  margin-left: 5px;
+}
