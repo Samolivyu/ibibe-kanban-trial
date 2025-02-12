@@ -1,4 +1,3 @@
-// src/pages/ShowTask.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -51,6 +50,7 @@ const ShowTask = ({ tasks = [] }) => {
           <thead>
             <tr>
               <th>Title</th>
+              <th>Description</th> {/* New column for description */}
               <th>User</th>
               <th>Role</th>
               <th>Status</th>
@@ -62,6 +62,7 @@ const ShowTask = ({ tasks = [] }) => {
               <React.Fragment key={task.id}>
                 <tr>
                   <td>{task.title}</td>
+                  <td>{task.description}</td> {/* Render task description */}
                   <td>{task.user}</td>
                   <td>{task.role}</td>
                   <td>
@@ -73,7 +74,7 @@ const ShowTask = ({ tasks = [] }) => {
                 </tr>
                 {task.subtasks && task.subtasks.length > 0 && (
                   <tr className="subtask-row">
-                    <td colSpan="5">
+                    <td colSpan="6">
                       <div className="subtask-list">
                         {task.subtasks.map((sub) => (
                           <div key={sub.id} className="subtask-item">

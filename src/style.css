@@ -1,5 +1,13 @@
 /* style.css */
 
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------- */
+/* Custom Styles (from your existing styles.css) */
+
 /* Reset */
 body, html {
   margin: 0;
@@ -90,13 +98,16 @@ body, html {
   background-color: #1976d2;
 }
 
-/* Dashboard Page */
-.dashboard {
+/* Dashboard and ShowTask Pages */
+/* Consolidated repeated styles into one rule */
+.dashboard,
+.show-task {
   margin-left: 70px;
   padding: 20px;
 }
 
-.dashboard-header {
+.dashboard-header,
+.show-task-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -220,18 +231,7 @@ body, html {
   border-bottom: 1px solid #eee;
 }
 
-/* ShowTask Page */
-.show-task {
-  margin-left: 70px;
-  padding: 20px;
-}
-
-.show-task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* Filter Section for ShowTask Page */
 .filter-section input,
 .filter-section select {
   padding: 5px;

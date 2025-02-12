@@ -22,10 +22,10 @@ const Hamburger = () => {
       </div>
       <nav className="nav-menu">
         <button onClick={() => handleNavClick("dashboard")}>
-          <span role="img" aria-label="home">🏠</span>
+          <span role="img" aria-label="home">🏠 Home </span>
         </button>
         <button onClick={() => handleNavClick("showtask")}>
-          <span role="img" aria-label="tasks">📋</span>
+          <span role="img" aria-label="tasks">📋 Tasks</span>
         </button>
       </nav>
     </div>

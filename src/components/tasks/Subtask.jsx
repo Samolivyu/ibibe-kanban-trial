@@ -1,9 +1,9 @@
-// src/components/Subtask.jsx
 import React, { useState } from "react";
 
 const Subtask = ({ parentTask, onAddSubtask }) => {
   const [subtaskData, setSubtaskData] = useState({
     title: "",
+    description: "", // New description field added
     user: "",
     role: "",
     status: "",
@@ -14,6 +14,7 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
   const validateForm = () => {
     const errors = {};
     if (!subtaskData.title) errors.title = "Title is required.";
+    if (!subtaskData.description) errors.description = "Description is required."; // Validate description
     if (!subtaskData.user) errors.user = "User is required.";
     if (!subtaskData.role) errors.role = "Role is required.";
     if (!subtaskData.status) errors.status = "Status is required.";
@@ -29,8 +30,13 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onAddSubtask(parentTask.id, { ...subtaskData, parentTaskId: parentTask.id, id: Date.now() });
-      setSubtaskData({ title: "", user: "", role: "", status: "", dueDate: "" });
+      onAddSubtask(parentTask.id, { 
+        ...subtaskData, 
+        parentTaskId: parentTask.id, 
+        id: Date.now() 
+      });
+      // Reset all fields including the new description field.
+      setSubtaskData({ title: "", description: "", user: "", role: "", status: "", dueDate: "" });
       setErrors({});
     }
   };
@@ -46,6 +52,15 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
           onChange={(e) => setSubtaskData({ ...subtaskData, title: e.target.value })}
         />
         {errors.title && <span className="error">{errors.title}</span>}
+        
+        <input 
+          type="text"
+          placeholder="Description"  // New input field for description
+          value={subtaskData.description}
+          onChange={(e) => setSubtaskData({ ...subtaskData, description: e.target.value })}
+        />
+        {errors.description && <span className="error">{errors.description}</span>}
+        
         <select
           value={subtaskData.user}
           onChange={(e) => setSubtaskData({ ...subtaskData, user: e.target.value })}
@@ -56,6 +71,7 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
           ))}
         </select>
         {errors.user && <span className="error">{errors.user}</span>}
+        
         <select
           value={subtaskData.role}
           onChange={(e) => setSubtaskData({ ...subtaskData, role: e.target.value })}
@@ -66,6 +82,7 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
           ))}
         </select>
         {errors.role && <span className="error">{errors.role}</span>}
+        
         <select
           value={subtaskData.status}
           onChange={(e) => setSubtaskData({ ...subtaskData, status: e.target.value })}
@@ -76,12 +93,14 @@ const Subtask = ({ parentTask, onAddSubtask }) => {
           ))}
         </select>
         {errors.status && <span className="error">{errors.status}</span>}
+        
         <input 
           type="date"
           value={subtaskData.dueDate}
           onChange={(e) => setSubtaskData({ ...subtaskData, dueDate: e.target.value })}
         />
         {errors.dueDate && <span className="error">{errors.dueDate}</span>}
+        
         <button type="submit" className="add-btn">Add Subtask</button>
       </form>
     </div>
