@@ -39,19 +39,6 @@ The app will be available at `http://localhost:3000`.
 - Click on tasks to add descriptions, due dates, and comments.
 - Assign tasks to team members.
 
-## Roadmap
-
--
-
-## Contributing
-
-We welcome contributions! If you'd like to contribute:
-
-1. Fork the project.
-2. Create a new branch (`feature/your-feature-name`).
-3. Commit your changes.
-4. Push to the branch and submit a Pull Request.
-
 ## Issues
 
 Feel free to submit issues regarding bugs, feature requests, or general questions in the [Issues](https://github.com/your-username/trial-kanban-app/issues) section.
