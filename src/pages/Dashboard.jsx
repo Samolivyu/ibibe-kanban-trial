@@ -97,8 +97,8 @@ const Dashboard = ({ tasks = [], onAddTask, onUpdateTask, onDeleteTask, onAddSub
         <table className="task-table">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
+              <th>Game</th>
+              <th>Task</th>
               <th>User</th>
               <th>Role</th>
               <th>Status</th>
@@ -121,7 +121,7 @@ const Dashboard = ({ tasks = [], onAddTask, onUpdateTask, onDeleteTask, onAddSub
                 <input
                   type="text"
                   value={formData.description}
-                  placeholder="Description"
+                  placeholder="Game"
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
                 {formErrors.description && <span className="error">{formErrors.description}</span>}
@@ -182,8 +182,8 @@ const Dashboard = ({ tasks = [], onAddTask, onUpdateTask, onDeleteTask, onAddSub
       <table className="task-table">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Description</th> 
+            <th>Game</th>
+            <th>Task</th> 
             <th>User</th>
             <th>Role</th>
             <th>Status</th>
@@ -214,7 +214,7 @@ const Dashboard = ({ tasks = [], onAddTask, onUpdateTask, onDeleteTask, onAddSub
                           onChange={(e) =>
                             onUpdateTask({ ...task, description: e.target.value })
                           }
-                          placeholder="Enter description..."
+                          placeholder="Enter task..."
                         />
                       </td>
                       <td>
