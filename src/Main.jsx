@@ -5,7 +5,6 @@ import App from './App.jsx';
 import ErrorBoundary from './components/errors/ErrorBoundary.jsx';
 import './style.css';
 
-// Main component: renders the application into the element with id 'root'
 const Main = () => {
   const container = document.getElementById('root');
   if (!container) {
@@ -14,7 +13,8 @@ const Main = () => {
   }
   
   // CreateRoot allows for concurrent mode and is the modern way to render React DOM
-  createRoot(container).render(
+  const root = createRoot(container);
+  root.render(
     <StrictMode>
       <BrowserRouter>
         <ErrorBoundary>
