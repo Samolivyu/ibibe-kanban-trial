@@ -1,16 +1,20 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Main from './Main';
+import { BrowserRouter } from 'react-router-dom';
+import App from './ibibe/App';
+import './ibibe/style.css';
 
-// Get the root element
 const container = document.getElementById('root');
+if (!container) {
+  console.error('Root element not found!');
+} else {
+  const root = createRoot(container);
 
-// Create a root
-const root = createRoot(container);
-
-// Render the application
-root.render(
-  <React.StrictMode>
-    <Main />
-  </React.StrictMode>
-);
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}

@@ -1,7 +1,5 @@
-// src/components/Hamburger.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../"; 
 
 const Hamburger = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);

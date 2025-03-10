@@ -5,15 +5,29 @@ import App from './App.jsx';
 import ErrorBoundary from './components/errors/ErrorBoundary.jsx';
 import './style.css';
 
-const Main = () => {
+(function() {
   const container = document.getElementById('root');
   if (!container) {
     console.error("The root element was not found");
-    return null;
+    return;
   }
   
-  // CreateRoot allows for concurrent mode and is the modern way to render React DOM
+  if (window.__REACT_ROOT__) {
+    window.__REACT_ROOT__.render(
+      <StrictMode>
+        <BrowserRouter>
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
+        </BrowserRouter>
+      </StrictMode>
+    );
+    return;
+  }
+  
   const root = createRoot(container);
+  window.__REACT_ROOT__ = root;
+  
   root.render(
     <StrictMode>
       <BrowserRouter>
@@ -23,8 +37,5 @@ const Main = () => {
       </BrowserRouter>
     </StrictMode>
   );
-  
-  return null; // The Main component just performs the rendering, nothing to return.
-};
+})();
 
-export default Main;

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Hamburger from "../pages/Hamburger";
-import Subtask from "../components/tasks/Subtask";
+import Hamburger from "./Hamburger";
+import Subtask from "../tasks/Subtask";
 
-// Updated options for dropdowns.
 const userOptions = ["User 1", "User 2", "User 3", "User 4", "User 5"];
 const roleOptions = ["Tester", "Unity dev", "Back-end", "Front-end", "API dev"];
 const statusOptions = ["To Do", "In Progress", "Under Review", "Done"];

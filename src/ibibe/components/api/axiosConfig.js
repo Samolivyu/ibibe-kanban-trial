@@ -1,8 +1,17 @@
 // src/api/axiosConfig.js
 import axios from 'axios';
 
+// Determine the base URL based on environment
+const getBaseUrl = () => {
+  // Check if running in development mode
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3001/api'; // Local development API
+  }
+  return 'http://localhost:3001/api'; // Production API
+};
+
 const api = axios.create({
-  baseURL: 'https://admin-api.ibibe.africa/api', // Your API base URL
+  baseURL: getBaseUrl(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -30,8 +39,9 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         try {
+          // Use the same base URL for refresh token requests
           const { data } = await axios.post(
-            'https://admin-api.ibibe.africa/api/auth/refresh',
+            `${getBaseUrl()}/auth/refresh`,
             { refreshToken }
           );
           localStorage.setItem('authToken', data.token);
@@ -47,5 +57,10 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// For development debugging
+if (process.env.NODE_ENV === 'development') {
+  console.log('API configured with base URL:', getBaseUrl());
+}
 
 export default api;

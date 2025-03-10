@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { createContext, useContext } from "react";
 import { Outlet } from "react-router-dom";
-// Updated the import path for Hamburger since AuthContext.jsx is located in src/components/contexts and Hamburger is in src/pages.
-import Hamburger from "../../pages/Hamburger"; 
+import Hamburger from "../pages/Hamburger"; 
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
 // Custom hook to use the AuthContext
